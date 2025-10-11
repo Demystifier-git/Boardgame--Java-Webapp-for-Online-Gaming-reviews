@@ -1,0 +1,54 @@
+name: Snyk Security Scan (Java)
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  snyk-java-scan:
+    name: Snyk Vulnerability Scan - Java (Maven)
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      security-events: write
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Step 2: Set up Java (OpenJDK 11)
+      - name: Set up JDK 11
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+          cache: maven
+
+      # Step 3: Build dependencies (Maven)
+      - name: Build project with Maven
+        run: mvn -B clean install -DskipTests
+
+      # Step 4: Run Snyk scan
+      - name: Run Snyk vulnerability scan
+        uses: snyk/actions/maven@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          command: test
+          args: --severity-threshold=medium --sarif-file-output=snyk.sarif
+
+      # Step 5: Upload results to GitHub Security tab
+      - name: Upload Snyk SARIF report to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: snyk.sarif
+
+
+     
+
+
