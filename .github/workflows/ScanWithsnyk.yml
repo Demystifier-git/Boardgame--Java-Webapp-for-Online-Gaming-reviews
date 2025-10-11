@@ -29,24 +29,27 @@ jobs:
           java-version: '11'
           cache: maven
 
-      # Step 3: Build dependencies (Maven)
+      # Step 3: Build dependencies (point to the correct subfolder)
       - name: Build project with Maven
+        working-directory: APPLICATION/frontend
         run: mvn -B clean install -DskipTests
 
-      # Step 4: Run Snyk scan
+      # Step 4: Run Snyk vulnerability scan
       - name: Run Snyk vulnerability scan
         uses: snyk/actions/maven@master
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           command: test
           args: --severity-threshold=medium --sarif-file-output=snyk.sarif
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        working-directory: APPLICATION/frontend
 
-      # Step 5: Upload results to GitHub Security tab
+      # Step 5: Upload Snyk report to GitHub Security tab
       - name: Upload Snyk SARIF report to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: snyk.sarif
+          sarif_file: APPLICATION/frontend/snyk.sarif
+
 
 
      
