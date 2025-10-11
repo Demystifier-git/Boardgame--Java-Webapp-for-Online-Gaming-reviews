@@ -1,5 +1,5 @@
 #environment variables
-java/
+APP/
 mysql/
 
 # Local Terraform state
