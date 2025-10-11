@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  java:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    env_file:
+      - ./java/.env    
+    depends_on:
+      - mysql
+    networks:
+      - app-network  
+
+  mysql:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "3306:3306"
+    env_file:
+      - ./mysql/.env
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./backend/schema.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - app-network 
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mysql-data:
