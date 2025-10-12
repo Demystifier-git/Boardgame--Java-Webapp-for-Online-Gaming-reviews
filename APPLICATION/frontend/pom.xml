@@ -56,6 +56,14 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <!-- ✅ Jakarta Servlet API added to fix compilation errors -->
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>6.1.0</version>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- ✅ Updated H2 (fixes RCE & XXE vulnerabilities) -->
         <dependency>
             <groupId>com.h2database</groupId>
@@ -152,4 +160,5 @@
     </distributionManagement>
 
 </project>
+
 
