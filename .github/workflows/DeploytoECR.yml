@@ -52,7 +52,8 @@ jobs:
       # Step 6: Push Docker image to ECR
       - name: Push Docker image to Amazon ECR
         run: |
-          docker push $ECR_URI/$ECR_REPOSITORY:$IMAGE_TAG
+          docker tag $ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
       # ✅ Step 7: Confirmation message
       - name: Deployment summary
