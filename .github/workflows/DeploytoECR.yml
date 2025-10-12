@@ -13,10 +13,7 @@ jobs:
     permissions:
       contents: read
 
-    env:
-      AWS_REGION: us-east-1           
-      ECR_REPOSITORY: boardgame-app   
-      IMAGE_TAG: latest               # or use ${{ github.sha }} for unique tags
+     
 
     steps:
       # Step 1: Checkout repository
@@ -32,9 +29,10 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       # Step 3: Login to Amazon ECR
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v2
+      - name: Login to Amazon ECR Public
+        run: |
+             aws ecr-public get-login-password --region us-east-1 \
+             docker login --username AWS --password-stdin public.ecr.aws
 
       # Step 4: Build Docker image
       - name: Build Docker image
