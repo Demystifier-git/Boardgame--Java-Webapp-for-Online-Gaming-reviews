@@ -1,4 +1,4 @@
-name: Snyk Security Scan (Java)
+name: Snyk Security Scan (Spring Boot - Java)
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
 
 jobs:
   snyk-java-scan:
-    name: Snyk Vulnerability Scan - Java (Maven)
+    name: Snyk Vulnerability Scan - Spring Boot (Maven)
     runs-on: ubuntu-latest
 
     permissions:
@@ -29,25 +29,24 @@ jobs:
           java-version: '11'
           cache: maven
 
-      # Step 3: Build dependencies (in subfolder)
-      - name: Build project with Maven
-        run: |
-          cd APPLICATION/frontend
-          mvn -B clean install -DskipTests
+      # Step 3: Build the Spring Boot project
+      - name: Build Spring Boot project with Maven
+        working-directory: APPLICATION/frontend
+        run: mvn -B clean package -DskipTests
 
-      # Step 4: Run Snyk vulnerability scan (in subfolder)
+      # Step 4: Run Snyk vulnerability scan
       - name: Run Snyk vulnerability scan
-        run: |
-          cd APPLICATION/frontend
-          snyk test --severity-threshold=medium --sarif-file-output=snyk.sarif
+        working-directory: APPLICATION/frontend
+        run: snyk test --severity-threshold=medium --sarif-file-output=snyk.sarif
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
-      # Step 5: Upload Snyk report to GitHub Security tab
+      # Step 5: Upload Snyk SARIF report to GitHub Security tab
       - name: Upload Snyk SARIF report to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: APPLICATION/frontend/snyk.sarif
+
 
 
 
