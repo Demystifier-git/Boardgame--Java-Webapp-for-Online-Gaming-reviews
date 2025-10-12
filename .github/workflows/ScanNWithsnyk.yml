@@ -33,12 +33,7 @@ jobs:
       - name: Install Snyk CLI
         run: npm install -g snyk
 
-      # ✅ Step 2.6: Clear Maven dependency cache and update repositories
-      - name: Refresh Maven Dependencies
-        working-directory: APPLICATION/frontend
-        run: |
-          mvn dependency:purge-local-repository
-          mvn clean install -U -DskipTests
+      
 
       # Step 3: Build the Spring Boot project
       - name: Build Spring Boot project with Maven
