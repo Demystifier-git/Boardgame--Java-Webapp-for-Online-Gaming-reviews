@@ -29,9 +29,16 @@ jobs:
           java-version: '17'
           cache: maven
 
-      # ✅ Step 2.5: Install Snyk CLI (added to fix "command not found" error)
+      # ✅ Step 2.5: Install Snyk CLI
       - name: Install Snyk CLI
         run: npm install -g snyk
+
+      # ✅ Step 2.6: Clear Maven dependency cache and update repositories
+      - name: Refresh Maven Dependencies
+        working-directory: APPLICATION/frontend
+        run: |
+          mvn dependency:purge-local-repository
+          mvn clean install -U -DskipTests
 
       # Step 3: Build the Spring Boot project
       - name: Build Spring Boot project with Maven
@@ -50,6 +57,7 @@ jobs:
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: APPLICATION/frontend/snyk.sarif
+
 
 
 
