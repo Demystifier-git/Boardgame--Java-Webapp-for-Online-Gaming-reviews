@@ -1,7 +1,7 @@
 # ================================
 # Stage 1: Build the application
 # ================================
-FROM maven:3.8.6-openjdk-11 AS build
+FROM maven:3.8.6-openjdk-17 AS build
 
 # Set working directory
 WORKDIR /app
@@ -17,7 +17,7 @@ RUN mvn clean package -DskipTests
 # ================================
 # Stage 2: Run the application
 # ================================
-FROM openjdk:11-jdk-slim
+FROM openjdk:17-jdk-slim
 
 # Set working directory inside container
 WORKDIR /app
