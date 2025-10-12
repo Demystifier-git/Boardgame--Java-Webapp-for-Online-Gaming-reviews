@@ -4,6 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
                              https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
+    <!-- ===== Original Code: Unchanged ===== -->
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -30,6 +31,8 @@
     </properties>
 
     <dependencies>
+        <!-- ===== Original Dependencies Unchanged ===== -->
+
         <!-- Thymeleaf Spring Security -->
         <dependency>
             <groupId>org.thymeleaf.extras</groupId>
@@ -107,6 +110,23 @@
             <artifactId>jacoco-maven-plugin</artifactId>
             <version>${jacoco.version}</version>
         </dependency>
+
+        <!-- ===== Added Dependencies Below (Original Untouched) ===== -->
+
+        <!-- MySQL Connector for DB Integration -->
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <version>9.0.0</version>
+        </dependency>
+
+        <!-- Validation API -->
+        <dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+            <version>3.1.0-M2</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -161,6 +181,7 @@
     </distributionManagement>
 
 </project>
+
 
 
 
