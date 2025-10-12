@@ -1,0 +1,62 @@
+name: Deploy to Amazon ECR (Spring Boot - Java)
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy-ecr:
+    name: Build & Push Docker Image to ECR
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    env:
+      AWS_REGION: us-east-1           
+      ECR_REPOSITORY: boardgame-app   
+      IMAGE_TAG: latest               # or use ${{ github.sha }} for unique tags
+
+    steps:
+      # Step 1: Checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Step 2: Configure AWS credentials
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      # Step 3: Login to Amazon ECR
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      # Step 4: Build Docker image
+      - name: Build Docker image
+        working-directory: APPLICATION/frontend
+        run: |
+          docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
+
+      # Step 5: Tag Docker image for ECR
+      - name: Tag Docker image
+        run: |
+          ECR_URI=${{ steps.login-ecr.outputs.registry }}
+          docker tag $ECR_REPOSITORY:$IMAGE_TAG $ECR_URI/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "ECR_URI=$ECR_URI" >> $GITHUB_ENV
+
+      # Step 6: Push Docker image to ECR
+      - name: Push Docker image to Amazon ECR
+        run: |
+          docker push $ECR_URI/$ECR_REPOSITORY:$IMAGE_TAG
+
+      # ✅ Step 7: Confirmation message
+      - name: Deployment summary
+        run: |
+          echo "✅ Successfully pushed image to Amazon ECR:"
+          echo "$ECR_URI/$ECR_REPOSITORY:$IMAGE_TAG"
+
