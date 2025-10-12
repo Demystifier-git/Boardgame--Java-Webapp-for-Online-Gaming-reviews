@@ -22,7 +22,7 @@
 
     <properties>
         <java.version>17</java.version>
-        <jacoco.version>0.8.7</jacoco.version>
+        <jacoco.version>0.8.9</jacoco.version> <!-- upgraded from 0.8.7 -->
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
         <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
@@ -34,12 +34,14 @@
         <dependency>
             <groupId>org.thymeleaf.extras</groupId>
             <artifactId>thymeleaf-extras-springsecurity5</artifactId>
+            <version>3.1.0.RELEASE</version> <!-- upgraded from 3.0.5.RELEASE -->
         </dependency>
 
         <!-- Spring Boot Starters -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
+            <version>3.4.9</version> <!-- upgraded from 2.7.15 -->
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -48,10 +50,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
+            <version>3.0.0</version> <!-- upgraded from 2.7.15 -->
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <version>3.4.9</version> <!-- upgraded from 2.7.15 -->
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -62,6 +66,7 @@
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
+            <version>2.2.220</version> <!-- upgraded from 2.1.214 -->
             <scope>runtime</scope>
         </dependency>
 
@@ -76,11 +81,13 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <version>3.4.10</version> <!-- upgraded from 2.7.15 -->
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
+            <version>6.3.8</version> <!-- upgraded from 5.7.10 -->
             <scope>test</scope>
         </dependency>
 
@@ -152,6 +159,7 @@
     </distributionManagement>
 
 </project>
+
 
 
 
