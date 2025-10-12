@@ -29,6 +29,10 @@ jobs:
           java-version: '11'
           cache: maven
 
+      # ✅ Step 2.5: Install Snyk CLI (added to fix "command not found" error)
+      - name: Install Snyk CLI
+        run: npm install -g snyk
+
       # Step 3: Build the Spring Boot project
       - name: Build Spring Boot project with Maven
         working-directory: APPLICATION/frontend
@@ -46,6 +50,7 @@ jobs:
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: APPLICATION/frontend/snyk.sarif
+
 
 
 
