@@ -25,7 +25,7 @@ jobs:
           source: Terraform/*
           target: /home/${{ secrets.EC2_USER }}/app
 
-      # Step 3: Run Terraform on EC2 with AWS credentials
+      # Step 3: Run Terraform on EC2 using CLI variables for AWS credentials
       - name: Run Terraform on EC2
         uses: appleboy/ssh-action@v1.2.0
         with:
@@ -35,15 +35,18 @@ jobs:
           script: |
             cd /home/${{ secrets.EC2_USER }}/app/Terraform
 
-            # Export AWS credentials
-            export AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
-            export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
-            export AWS_DEFAULT_REGION=us-east-1
-
-            # Run Terraform with variables for access keys
+            # Initialize Terraform
             terraform init
-            terraform plan -var "aws_access_key=$AWS_ACCESS_KEY_ID" -var "aws_secret_key=$AWS_SECRET_ACCESS_KEY"
-            terraform apply -auto-approve -var "aws_access_key=$AWS_ACCESS_KEY_ID" -var "aws_secret_key=$AWS_SECRET_ACCESS_KEY"
+
+            # Plan with AWS credentials passed as CLI variables
+            terraform plan \
+              -var "aws_access_key=${{ secrets.AWS_ACCESS_KEY_ID }}" \
+              -var "aws_secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+
+            # Apply with AWS credentials passed as CLI variables
+            terraform apply -auto-approve \
+              -var "aws_access_key=${{ secrets.AWS_ACCESS_KEY_ID }}" \
+              -var "aws_secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}"
 
             echo "Terraform deployment complete."
 
