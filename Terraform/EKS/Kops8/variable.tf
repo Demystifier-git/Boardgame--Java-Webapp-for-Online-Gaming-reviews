@@ -49,7 +49,7 @@ variable "master_size" {
 variable "ssh_public_key_path" {
   description = "Path to public SSH key"
   type        = string
-  default     = "${path.module}/../bastion-key.pem"
+  default     = "../bastion-key.pem"
 }
 
 variable "my_ip" {

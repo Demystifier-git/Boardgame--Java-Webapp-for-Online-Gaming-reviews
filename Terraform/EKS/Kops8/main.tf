@@ -4,7 +4,8 @@
 locals {
   kops_state_store         = "s3://${var.kops_state_bucket}"
   zones_csv                = join(",", var.zones)
-  ssh_pub_key_path_expanded = replace(var.ssh_public_key_path, "~", pathexpand("~"))
+ ssh_pub_key_path_expanded = abspath(var.ssh_public_key_path)
+
 }
 
 ##################################################
