@@ -44,53 +44,9 @@ resource "aws_s3_bucket_public_access_block" "block" {
   restrict_public_buckets = true
 }
 
-##################################################
-# Load SSH public key and create AWS key pair
-##################################################
-data "local_file" "ssh_pubkey" {
-  filename = local.ssh_pub_key_path_expanded
-}
 
-resource "aws_key_pair" "kops_key" {
-  key_name   = "${replace(var.cluster_name, ".", "-")}-key"
-  public_key = data.local_file.ssh_pubkey.content
-}
 
-##################################################
-# Security Group for Kops Cluster
-##################################################
-resource "aws_security_group" "kops_cluster_sg" {
-  name        = "${var.cluster_name}-sg"
-  description = "Security group for Kops cluster"
-  vpc_id      = data.aws_vpc.existing.id
 
-  ingress {
-    description = "Allow SSH"
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = [var.my_ip]
-  }
-
-  ingress {
-    description = "Allow Kubernetes API"
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = [var.my_ip]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name = "${var.cluster_name}-sg"
-  }
-}
 
 ##################################################
 # Kops Cluster Creation
