@@ -1,0 +1,98 @@
+#################################################
+# Java Application Deployment
+#################################################
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: java-app-deployment
+  labels:
+    app: java-app
+spec:
+  replicas: 3
+  strategy:
+    type: Recreate
+
+  selector:
+    matchLabels:
+      app: java-app
+
+  template:
+    metadata:
+      labels:
+        app: java-app
+
+    spec:
+      containers:
+        - name: java-app
+          image: public.ecr.aws/a0l9x4c2/java-boardgame-webapp:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+
+          env:
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: java-app-secrets
+                  key: DB_USER
+
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: java-app-secrets
+                  key: DB_PASS
+
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: java-app-config
+                  key: DB_HOST  
+
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "512Mi"
+            limits:
+              cpu: "500m"
+              memory: "1024Mi"
+
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 5
+
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 20
+            timeoutSeconds: 5
+            failureThreshold: 5
+
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+
+---
+
+#################################################
+# Java Application Service
+#################################################
+apiVersion: v1
+kind: Service
+metadata:
+  name: java-app-service
+  labels:
+    app: java-app
+spec:
+  selector:
+    app: java-app
+  type: LoadBalancer   # Change to NodePort or ClusterIP if needed
+  ports:
+    - protocol: TCP
+      port: 80         # External port exposed by the Service
+      targetPort: 8080 # Container port your Java app listens on
