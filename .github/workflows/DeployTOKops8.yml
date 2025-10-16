@@ -1,4 +1,4 @@
-name: Deploy Two Folders to EC2
+name: Deploy Terraform to EC2
 
 on:
   push:
@@ -15,28 +15,27 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Step 2: Copy frontend and backend folders to EC2
+      # Step 2: Copy Terraform folder to EC2
       - name: Copy files to EC2
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          source: |
-            Terraform/*
+          source: Terraform/*
           target: /home/${{ secrets.EC2_USER }}/app
 
-      # Step 3: (Optional) Run remote commands after deployment
-      - name: Restart app on EC2
+      # Step 3: Run Terraform commands on EC2 with AWS credentials
+      - name: Run Terraform on EC2
         uses: appleboy/ssh-action@v1.2.0
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            cd /home/${{ secrets.EC2_USER }}/app
-            echo "Deployment complete."
-            # Example restart commands (customize as needed):
-            # pm2 restart all
-            # sudo systemctl restart nginx
+            cd /home/${{ secrets.EC2_USER }}/app/Terraform
+            export AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
+            export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            
+
 
