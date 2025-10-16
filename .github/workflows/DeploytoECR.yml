@@ -10,13 +10,13 @@ jobs:
     name: Build & Push Docker Image to ECR
     runs-on: ubuntu-latest
 
+    env:
+      AWS_REGION: us-east-1
+      ECR_URI: public.ecr.aws/a0l9x4c2/java-boardgame-webapp
+      IMAGE_TAG: latest
+
     permissions:
       contents: read
-
-    env:
-      AWS_REGION: us-east-1           
-      ECR_REPOSITORY: boardgame-app   
-      IMAGE_TAG: latest               # or use ${{ github.sha }} for unique tags
 
     steps:
       # Step 1: Checkout repository
@@ -29,35 +29,32 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.AWS_REGION }}
+          aws-region: us-east-1
 
-      # Step 3: Login to Amazon ECR
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v2
+      # Step 3: Login to Amazon ECR Public
+      - name: Login to Amazon ECR Public
+        run: |
+          aws ecr-public get-login-password --region us-east-1 | \
+          docker login --username AWS --password-stdin public.ecr.aws
 
       # Step 4: Build Docker image
       - name: Build Docker image
         working-directory: APPLICATION/frontend
         run: |
-          docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
+          docker build -t java-boardgame-webapp:$IMAGE_TAG .
 
-      # Step 5: Tag Docker image for ECR
+      # Step 5: Tag Docker image for ECR Public
       - name: Tag Docker image
         run: |
-          ECR_URI=${{ steps.login-ecr.outputs.registry }}
-          docker tag $ECR_REPOSITORY:$IMAGE_TAG $ECR_URI/$ECR_REPOSITORY:$IMAGE_TAG
-          echo "ECR_URI=$ECR_URI" >> $GITHUB_ENV
-
-      # Step 6: Push Docker image to ECR
-      - name: Push Docker image to Amazon ECR
-        run: |
           docker tag java-boardgame-webapp:$IMAGE_TAG $ECR_URI:$IMAGE_TAG
+
+      # Step 6: Push Docker image to Amazon ECR Public
+      - name: Push Docker image to Amazon ECR Public
+        run: |
           docker push $ECR_URI:$IMAGE_TAG
 
       # ✅ Step 7: Confirmation message
       - name: Deployment summary
         run: |
-          echo "✅ Successfully pushed image to Amazon ECR:"
-          echo "$ECR_URI/$ECR_REPOSITORY:$IMAGE_TAG"
-
+          echo "✅ Successfully pushed image to Amazon ECR Public"
+          echo "📦 Image: $ECR_URI:$IMAGE_TAG"
