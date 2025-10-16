@@ -63,13 +63,3 @@ variable "additional_kops_create_args" {
   type        = string
   default     = "--topology public --networking calico"
 }
-
-variable "aws_access_key" {
-  type        = string
-  description = "AWS Access Key"
-}
-
-variable "aws_secret_key" {
-  type        = string
-  description = "AWS Secret Key"
-}
