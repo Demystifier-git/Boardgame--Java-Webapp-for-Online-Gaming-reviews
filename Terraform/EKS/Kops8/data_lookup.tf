@@ -12,3 +12,4 @@ data "aws_subnet" "private_1" {
 data "aws_subnet" "private_2" {
   id = "subnet-05ebcf5c9931e208c"  # <-- Replace with your actual private subnet ID
 }
+
