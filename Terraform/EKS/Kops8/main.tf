@@ -60,8 +60,8 @@ resource "null_resource" "kops_create_cluster" {
     node_count         = tostring(var.node_count)
     node_size          = var.node_size
     master_size        = var.master_size
-    ssh_key_name       = aws_key_pair.kops_key.key_name
-    security_group_id  = aws_security_group.kops_cluster_sg.id
+    ssh_key_name       = var.ssh_public_key_path
+    security_group_id  = aws_security_group.alb_sg
     extra_args         = var.additional_kops_create_args
   }
 
@@ -98,8 +98,7 @@ resource "null_resource" "kops_create_cluster" {
 
   depends_on = [
     aws_s3_bucket.kops_state,
-    aws_security_group.kops_cluster_sg,
-    aws_key_pair.kops_key
+    aws_security_group.alb_sg
   ]
 }
 

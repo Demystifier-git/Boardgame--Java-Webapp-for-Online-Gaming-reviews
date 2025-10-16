@@ -7,11 +7,11 @@ output "cluster_name" {
 }
 
 output "security_group_id" {
-  value = aws_security_group.kops_cluster_sg.id
+  value = aws_security_group.alb_sg
 }
 
 output "ssh_key_name" {
-  value = aws_key_pair.kops_key.key_name
+  value = var.ssh_public_key_path
 }
 
 output "node_role_arn" {
