@@ -55,7 +55,7 @@ variable "ssh_public_key_path" {
 variable "my_ip" {
   description = "Your IP address or CIDR for SSH/API access"
   type        = string
-  default     = "105.112.67.184/32" # ⚠️ Change this to your IP, e.g. "102.89.45.12/32"
+  default     = "3.84.102.38/32" # ⚠️ Change this to your IP, e.g. "102.89.45.12/32"
 }
 
 variable "additional_kops_create_args" {
