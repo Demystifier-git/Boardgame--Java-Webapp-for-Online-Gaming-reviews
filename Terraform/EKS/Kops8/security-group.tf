@@ -1,5 +1,5 @@
-resource "aws_security_group" "alb_sg" {
-  name   = "alb-sg"
+resource "aws_security_group" "kops_sg" {
+  name   = "kops-cluster-sg"
   vpc_id = data.aws_vpc.existing.id
 
   ingress {
