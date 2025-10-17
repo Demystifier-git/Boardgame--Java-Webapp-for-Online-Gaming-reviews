@@ -31,7 +31,7 @@ resource "aws_iam_role_policy_attachment" "attach_custom_policy" {
 
 # Reference the existing EC2 instance profile
 data "aws_iam_instance_profile" "kops_instance_profile" {
-  name = "arn:aws:iam::920216467853:instance-profile/EC2"  # <-- Your existing instance profile
+  name = "EC2"  # <-- Your existing instance profile
 }
 
 
