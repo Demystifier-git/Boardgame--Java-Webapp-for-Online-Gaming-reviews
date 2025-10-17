@@ -23,11 +23,7 @@ resource "aws_iam_role_policy_attachment" "attach_eks_cni" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
 }
 
-# Attach your custom policy if you created one
-resource "aws_iam_role_policy_attachment" "attach_custom_policy" {
-  role       = data.aws_iam_role.kops_nodes.name
-  policy_arn = "arn:aws:iam::920216467853:policy/Terraform-Kops-Permission"
-}
+
 
 # Reference the existing EC2 instance profile
 data "aws_iam_instance_profile" "kops_instance_profile" {

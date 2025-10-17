@@ -51,7 +51,7 @@ resource "null_resource" "kops_create_cluster" {
         --node-count ${var.node_count} \
         --node-size ${var.node_size} \
         --master-size ${var.master_size} \
-        --ssh-public-key ${local.ssh_pub_key_path_expanded} \
+        --ssh-public-key ${var.ssh_public_key_path} \
         --kubernetes-version ${var.kubernetes_version} \
         --authorization RBAC \
         ${var.additional_kops_create_args} || true
