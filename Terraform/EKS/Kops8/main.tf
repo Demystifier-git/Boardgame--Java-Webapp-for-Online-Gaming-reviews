@@ -22,7 +22,7 @@ locals {
 resource "null_resource" "kops_create_cluster" {
   triggers = {
     cluster_name       = var.cluster_name
-    state_bucket       = aws_s3_bucket.kops_state.bucket
+    state_bucket       = var.kops_state_bucket
     kubernetes_version = var.kubernetes_version
     zones              = join(",", var.zones)
     node_count         = tostring(var.node_count)
@@ -65,7 +65,7 @@ resource "null_resource" "kops_create_cluster" {
   }
 
   depends_on = [
-    aws_s3_bucket.kops_state,
+    var.kops_state_bucket,
     aws_security_group.alb_sg
   ]
 }
