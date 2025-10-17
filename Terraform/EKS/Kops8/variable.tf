@@ -25,7 +25,7 @@ variable "zones" {
 variable "kubernetes_version" {
   description = "Kubernetes version"
   type        = string
-  default     = "1.34.0"
+  default     = "1.31.0"
 }
 
 variable "node_count" {
