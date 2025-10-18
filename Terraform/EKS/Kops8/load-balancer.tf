@@ -15,7 +15,7 @@ resource "aws_lb_target_group" "api_tg" {
   name        = "api-tg"
   port        = 443
   protocol    = "HTTPS"
-  vpc_id      = data.aws_vpc.existing
+  vpc_id      = data.aws_vpc.existing.id
   target_type = "instance"
   health_check {
     port     = "443"
