@@ -2,7 +2,7 @@
 resource "aws_security_group" "alb_sg" {
   name        = "alb-sg"
   description = "Allow HTTPS from anywhere"
-  vpc_id      = data.aws_vpc.main.id
+  vpc_id      = data.aws_vpc.existing
 
   ingress {
     description = "HTTPS from anywhere"
