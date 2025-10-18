@@ -29,6 +29,11 @@ resource "aws_lb_listener" "api_listener" {
   load_balancer_arn = aws_lb.api_alb.arn
   port              = 443
   protocol          = "HTTPS"
+
+  ssl_policy        = "ELBSecurityPolicy-2016-08"
+  certificate_arn   = "arn:aws:acm:us-east-1:920216467853:certificate/2d576d86-5fc3-4f85-b466-14c1e52f5b26"
+
+
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.api_tg.arn

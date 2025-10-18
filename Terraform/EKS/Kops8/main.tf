@@ -41,7 +41,7 @@ resource "null_resource" "kops_create_cluster" {
 
       echo "Creating Kops cluster: ${var.cluster_name}"
 
-      kops update cluster --name cluster.delightdavid.online --state s3://boardgame-app-2028 --yes
+      kops create cluster \
         --name ${var.cluster_name} \
         --cloud aws \
         --state ${local.kops_state_store} \

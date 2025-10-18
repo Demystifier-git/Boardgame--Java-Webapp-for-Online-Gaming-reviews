@@ -23,3 +23,5 @@ data "aws_subnet" "public_1" {
 data "aws_subnet" "public_2" {
   id = "subnet-0bbbb9369dcaa6626"  # Replace with your public subnet ID
 }
+
+
