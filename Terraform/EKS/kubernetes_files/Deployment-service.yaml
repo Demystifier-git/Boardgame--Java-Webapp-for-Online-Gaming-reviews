@@ -22,6 +22,9 @@ spec:
         app: java-app
 
     spec:
+      # ✅ Use the service account linked to IAM (IRSA)
+      serviceAccountName: secretsmanager-sa
+
       containers:
         - name: java-app
           image: public.ecr.aws/a0l9x4c2/java-boardgame-webapp:latest
@@ -96,4 +99,3 @@ spec:
     - protocol: TCP
       port: 80         # External port exposed by the Service
       targetPort: 8080 # Container port your Java app listens on
-
