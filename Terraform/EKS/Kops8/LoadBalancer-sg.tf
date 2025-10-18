@@ -1,5 +1,5 @@
-# 2. Security group for ALB
-resource "aws_albb" "alb_sg" {
+# Security group for ALB
+resource "aws_security_group" "alb_sg" {
   name        = "alb-sg"
   description = "Allow HTTPS from anywhere"
   vpc_id      = data.aws_vpc.existing.id
@@ -19,3 +19,4 @@ resource "aws_albb" "alb_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
+
