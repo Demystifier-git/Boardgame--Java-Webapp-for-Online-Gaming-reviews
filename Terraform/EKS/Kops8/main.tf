@@ -29,7 +29,7 @@ resource "null_resource" "kops_create_cluster" {
     node_size          = var.node_size
     master_size        = var.master_size
     ssh_key_name       = var.ssh_public_key_path
-    security_group_id  = aws_security_group.alb_sg.id
+    security_group_id  = aws_security_group.kops_sg
     extra_args         = var.additional_kops_create_args
   }
 
@@ -66,7 +66,7 @@ resource "null_resource" "kops_create_cluster" {
 
   depends_on = [
     var.kops_state_bucket,
-    aws_security_group.alb_sg
+    aws_security_group.kops_sg
   ]
 }
 
