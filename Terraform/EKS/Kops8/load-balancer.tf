@@ -1,9 +1,9 @@
 # Now in the ALB resource, use these explicitly
-resource "aws_alb" "api_alb" {
+resource "aws_lb" "api_alb" {
   name               = "api-alb"
   internal           = false
   load_balancer_type = "application"
-  security_groups    = [aws_security_group.alb_sg]
+  security_groups    = [aws_security_group.alb_sg.id]
   subnets            = [
     data.aws_subnet.public_1.id,
     data.aws_subnet.public_2.id
