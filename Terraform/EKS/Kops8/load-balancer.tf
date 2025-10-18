@@ -3,7 +3,7 @@ resource "aws_lb" "api_alb" {
   name               = "api-alb"
   internal           = false
   load_balancer_type = "application"
-  security_groups    = [aws_sg.alb_sg]
+  security_groups    = [aws_lg.alb_sg]
   subnets            = [
     data.aws_subnet.public_1.id,
     data.aws_subnet.public_2.id
