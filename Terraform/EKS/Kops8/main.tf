@@ -47,7 +47,7 @@ resource "null_resource" "kops_create_cluster" {
         --state ${local.kops_state_store} \
         --zones ${local.zones_csv} \
         --vpc ${data.aws_vpc.existing.id} \
-        --subnets ${data.aws_subnet.private_1.id},${data.aws_subnet.private_2.id} \
+        --subnets ${data.aws_subnet.public_1.id},${data.aws_subnet.public_2.id} \
         --node-count ${var.node_count} \
         --node-size ${var.node_size} \
         --master-size ${var.master_size} \
