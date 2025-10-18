@@ -1,4 +1,4 @@
-resource "aws_sec" "kops_sg" {
+resource "aws_security_group" "kops_sg" {
   name   = "kops-cluster-sg"
   vpc_id = data.aws_vpc.existing.id
 
