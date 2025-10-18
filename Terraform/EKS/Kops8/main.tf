@@ -29,7 +29,7 @@ resource "null_resource" "kops_create_cluster" {
     node_size          = var.node_size
     master_size        = var.master_size
     ssh_key_name       = var.ssh_public_key_path
-    security_group_id  = aws_security_group.kops_sg
+    security_group_id  = aws_sg.kops_sg.id
     extra_args         = var.additional_kops_create_args
   }
 
