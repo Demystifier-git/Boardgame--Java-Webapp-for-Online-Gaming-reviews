@@ -36,13 +36,13 @@ spec:
             - name: DB_USER
               valueFrom:
                 secretKeyRef:
-                  name: aws-java-app-secret-provider
+                  name: java-app-secrets
                   key: DB_USER
 
             - name: DB_PASS
               valueFrom:
                 secretKeyRef:
-                  name: aws-java-app-secret-provider
+                  name: java-app-secrets
                   key: DB_PASS
 
             - name: DB_HOST
