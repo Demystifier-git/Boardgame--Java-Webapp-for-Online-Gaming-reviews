@@ -1,5 +1,5 @@
 # 2. Security group for ALB
-resource "aws_load_balancer" "alb_sg" {
+resource "aws_security_group" "alb_sg" {
   name        = "alb-sg"
   description = "Allow HTTPS from anywhere"
   vpc_id      = data.aws_vpc.main.id

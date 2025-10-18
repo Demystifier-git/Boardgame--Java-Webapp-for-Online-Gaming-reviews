@@ -7,7 +7,7 @@ output "cluster_name" {
 }
 
 output "security_group_id" {
-  value = aws_security_group.alb_sg
+  value = aws_security_group.kops_sg
 }
 
 output "ssh_key_name" {
