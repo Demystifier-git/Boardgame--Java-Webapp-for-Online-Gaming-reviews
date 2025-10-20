@@ -11,17 +11,15 @@ spec:
   replicas: 3
   strategy:
     type: Recreate
-
   selector:
     matchLabels:
       app: java-app
-
   template:
     metadata:
       labels:
         app: java-app
-
-
+    spec:
+      serviceAccountName: secretsmanager-sa  # ✅ Use IAM role-linked service account
       containers:
         - name: java-app
           image: public.ecr.aws/a0l9x4c2/java-boardgame-webapp:latest
@@ -76,6 +74,7 @@ spec:
 
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
+
 
 ---
 
