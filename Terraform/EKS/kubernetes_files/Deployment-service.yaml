@@ -93,7 +93,7 @@ metadata:
 spec:
   selector:
     app: java-app
-  type: LoadBalancer   # Change to NodePort or ClusterIP if needed
+  type: ClusterIP   # Change to NodePort or ClusterIP if needed
   ports:
     - protocol: TCP
       port: 80         # External port exposed by the Service
