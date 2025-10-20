@@ -1,5 +1,5 @@
 #################################################
-# Java Application Deployment with CSI Secrets
+# Java Application Deployment
 #################################################
 apiVersion: apps/v1
 kind: Deployment
@@ -21,9 +21,6 @@ spec:
       labels:
         app: java-app
 
-    spec:
-      # ✅ Use the service account linked to IAM (IRSA)
-      serviceAccountName: secretsmanager-sa
 
       containers:
         - name: java-app
@@ -32,11 +29,24 @@ spec:
           ports:
             - containerPort: 8080
 
-          # ✅ Mount secrets from AWS Secrets Manager via CSI Driver
-          volumeMounts:
-            - name: secrets-store-inline
-              mountPath: "/mnt/secrets-store"
-              readOnly: true
+          env:
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: java-app-secrets
+                  key: DB_USER
+
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: java-app-secrets
+                  key: DB_PASS
+
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: java-app-config
+                  key: DB_HOST
 
           resources:
             requests:
@@ -63,14 +73,6 @@ spec:
             periodSeconds: 20
             timeoutSeconds: 5
             failureThreshold: 5
-
-      volumes:
-        - name: secrets-store-inline
-          csi:
-            driver: secrets-store.csi.k8s.io
-            readOnly: true
-            volumeAttributes:
-              secretProviderClass: "aws-java-app-secret-provider"
 
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
