@@ -3,20 +3,20 @@ kind: Ingress
 metadata:
   name: java-app-ingress
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"         # Keep HTTPS redirect if needed
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"    # Correct backend protocol
 spec:
   ingressClassName: nginx
   rules:
   - host: boardgame.delightdavid.online
     http:
       paths:
-      - path: /
-        pathType: Prefix
+      - path: /(.*)           # Match all paths and avoid rewrite issues
+        pathType: ImplementationSpecific
         backend:
           service:
             name: java-app-service
             port:
               number: 80
+
   
