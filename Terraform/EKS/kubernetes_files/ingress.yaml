@@ -9,7 +9,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: delightdavid.online
+  - host: boardgame.delightdavid.online
     http:
       paths:
       - path: /
