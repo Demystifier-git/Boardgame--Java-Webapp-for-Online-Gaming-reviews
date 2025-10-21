@@ -18,7 +18,7 @@ spec:
     metadata:
       labels:
         app: java-app
-  
+    spec:
       containers:
         - name: java-app
           image: public.ecr.aws/a0l9x4c2/java-boardgame-webapp:latest
@@ -75,6 +75,7 @@ spec:
 
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
+
 
 
 
