@@ -8,7 +8,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: boardgame.delightdavid.online
+  - host: delightdavid.online
     http:
       paths:
       - path: /(.*)           # Match all paths and avoid rewrite issues
