@@ -37,7 +37,7 @@ spec:
     # ---- Prometheus Request Rate (RPS) scaling ----
     - type: prometheus
       metadata:
-        serverAddress: http://prometheus-server.monitoring.svc.cluster.local:80
+        serverAddress: http://prometheus-server.monitoring.svc.cluster.local:9090
         metricName: http_requests_per_second
         threshold: "100"
         query: |
@@ -46,7 +46,7 @@ spec:
     # ---- Prometheus Latency (P95) scaling ----
     - type: prometheus
       metadata:
-        serverAddress: http://prometheus-server.monitoring.svc.cluster.local:80
+        serverAddress: http://prometheus-server.monitoring.svc.cluster.local:9090
         metricName: http_latency_p95
         threshold: "0.5"
         query: |
