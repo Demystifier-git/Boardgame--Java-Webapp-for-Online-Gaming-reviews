@@ -1,0 +1,19 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: java-app-probe-rules
+  namespace: monitoring
+  labels:
+    release: prometheus
+spec:
+  groups:
+    - name: blackbox-probe.rules
+      rules:
+        - alert: JavaAppDown
+          expr: probe_success{job="java-app"} == 0
+          for: 2m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Java App is unreachable"
+            description: "Blackbox probe to {{ $labels.instance }} failed for 2 minutes"

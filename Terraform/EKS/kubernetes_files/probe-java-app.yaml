@@ -1,0 +1,19 @@
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: java-app-probe
+  namespace: monitoring
+  labels:
+    release: prometheus   # matches your Prometheus release name
+spec:
+  jobName: java-app
+  interval: 30s
+  module: http_2xx
+  prober:
+    url: blackbox-prometheus-blackbox-exporter.monitoring.svc:9115
+  targets:
+    staticConfig:
+      static:
+        - https://delightdavid.online/health
+        - https://delightdavid.online/login
+        - https://api.delightdavid.online/health
