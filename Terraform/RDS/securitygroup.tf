@@ -15,6 +15,18 @@ resource "aws_security_group" "db_sg" {
     
   }
 
+  
+  ingress {
+    description      = "MySQL inbound"
+    from_port        = 3306
+    to_port          = 3306
+    protocol         = "tcp"
+    security_groups = ["sg-09501c4b44e2fc7c7"]
+  
+    
+    
+  }
+
   egress {
     from_port   = 0
     to_port     = 0
