@@ -79,7 +79,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         auth.jdbcAuthentication()
                 .dataSource(dataSource)
-                .withDefaultSchema()
                 .passwordEncoder(passwordEncoder)
                 .withUser("bugs")
                 .password(passwordEncoder.encode("bunny")).roles("USER")
