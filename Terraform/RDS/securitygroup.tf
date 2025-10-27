@@ -9,7 +9,7 @@ resource "aws_security_group" "db_sg" {
     from_port        = 3306
     to_port          = 3306
     protocol         = "tcp"
-    security_groups = ["sg-00846e7de3a2998cb"]
+    security_groups = ["sg-0ff19ade5804ba9a6"]
   
     
     

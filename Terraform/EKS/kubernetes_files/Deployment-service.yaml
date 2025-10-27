@@ -39,6 +39,13 @@ spec:
                   name: java-app-secrets
                   key: DB_PASS
 
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: java-app-secrets
+                  key: DB_NAME
+      
+
             - name: DB_HOST
               valueFrom:
                 configMapKeyRef:
