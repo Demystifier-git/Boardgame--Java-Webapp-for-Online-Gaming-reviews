@@ -34,40 +34,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private DataSource dataSource;
 
-    /**
-     * Creates a bean of type JdbcUserDetailsManager that will be used in
-     * HomeController
-     * 
-     * @return an instance configured to use our datasource
-     * @throws Exception
-     */
     @Bean
-    public JdbcUserDetailsManager jdbcUserDetailsManager() throws Exception {
-        // provides crud operations for users
-        JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager();
-
-        // Link up with our datasource
-        jdbcUserDetailsManager.setDataSource(dataSource);
-        return jdbcUserDetailsManager;
+    public JdbcUserDetailsManager jdbcUserDetailsManager() {
+        JdbcUserDetailsManager manager = new JdbcUserDetailsManager();
+        manager.setDataSource(dataSource);
+        return manager;
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/user/**").hasAnyRole("USER", "MANAGER") // sets up authorization
-                .antMatchers("/secured/**").hasAnyRole("USER", "MANAGER")
+                .antMatchers("/signup", "/h2-console/**", "/", "/**").permitAll()
+                .antMatchers("/user/**", "/secured/**").hasAnyRole("USER", "MANAGER")
                 .antMatchers("/manager/**").hasRole("MANAGER")
-                .antMatchers("/h2-console/**").permitAll()
-                .antMatchers("/", "/**").permitAll() // allows access to index in templates
-                .and() // allows us to chain
-                .formLogin().loginPage("/login")
-                .defaultSuccessUrl("/secured")
                 .and()
-                .logout().invalidateHttpSession(true)
-                .clearAuthentication(true)
+                .formLogin().loginPage("/login").defaultSuccessUrl("/secured")
                 .and()
-                .exceptionHandling()
-                .accessDeniedHandler(accessDeniedHandler);
+                .logout().invalidateHttpSession(true).clearAuthentication(true)
+                .and()
+                .exceptionHandling().accessDeniedHandler(accessDeniedHandler);
 
         http.csrf().disable();
         http.headers().frameOptions().disable();
@@ -75,7 +60,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        // ✅ Use queries to read existing users and roles from your database
         auth.jdbcAuthentication()
             .dataSource(dataSource)
             .usersByUsernameQuery("SELECT username, password, enabled FROM users WHERE username = ?")
@@ -83,3 +67,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .passwordEncoder(passwordEncoder);
     }
 }
+
