@@ -38,6 +38,7 @@ public class HomeController {
 
     @GetMapping("/newUser")
     public String newUser(Model model) {
+
         List<String> authorities = da.getAuthorities();
         model.addAttribute("authorities", authorities);
         return "new-user";
@@ -45,7 +46,7 @@ public class HomeController {
 
     @PostMapping("/addUser")
     public String addUser(@RequestParam String userName, @RequestParam String password,
-                          @RequestParam String[] authorities, Model model, RedirectAttributes redirectAttrs) {
+            @RequestParam String[] authorities, Model model, RedirectAttributes redirectAttrs) {
 
         List<GrantedAuthority> authorityList = new ArrayList<>();
 
@@ -54,14 +55,16 @@ public class HomeController {
         }
         String encodedPassword = passwordEncoder.encode(password);
 
+        // check existing user
         if (jdbcUserDetailsManager.userExists(userName)) {
-            model.addAttribute("errorMsg", "User name already exists. Try a different one.");
+            model.addAttribute("errorMsg", "User name already Exists. Try a different user name.");
             model.addAttribute("authorities", authorityList);
             return "new-user";
         } else {
             User user = new User(userName, encodedPassword, authorityList);
+
             jdbcUserDetailsManager.createUser(user);
-            redirectAttrs.addFlashAttribute("userAddedMsg", "User successfully added!");
+            redirectAttrs.addFlashAttribute("userAddedMsg", "User succesfully added!");
             return "redirect:/";
         }
     }
@@ -90,9 +93,11 @@ public class HomeController {
     public String addReview(@PathVariable Long id, Model model) {
         model.addAttribute("boardgame", da.getBoardGame(id));
         model.addAttribute("review", new Review());
+
         return "secured/addReview";
     }
 
+    // edit the review
     @GetMapping("/{gameId}/reviews/{id}")
     public String editReview(@PathVariable Long gameId, @PathVariable Long id, Model model) {
         Review review = da.getReview(id);
@@ -109,24 +114,31 @@ public class HomeController {
 
     @PostMapping("/boardgameAdded")
     public String boardgameAdded(@ModelAttribute BoardGame boardgame) {
-        da.addBoardGame(boardgame);
+        Long returnValue = da.addBoardGame(boardgame);
+        System.out.println("return value is: " + returnValue);
         return "redirect:/";
     }
 
     @PostMapping("/reviewAdded")
     public String reviewAdded(@ModelAttribute Review review) {
+        int returnValue;
+        // if id exists, edit
         if (review.getId() != null) {
-            da.editReview(review);
+            returnValue = da.editReview(review);
         } else {
-            da.addReview(review);
+            // if id not exists, add
+            returnValue = da.addReview(review);
         }
-        return "redirect:/" + review.getGameId() + "/reviews";
+        System.out.println("return value is: " + returnValue);
+        return "redirect:/" + review.getGameId() +
+                "/reviews";
     }
 
     @GetMapping("/deleteReview/{id}")
     public String deleteReview(@PathVariable Long id) {
         Long gameId = da.getReview(id).getGameId();
-        da.deleteReview(id);
+        int returnValue = da.deleteReview(id);
+        System.out.println("return value is: " + returnValue);
         return "redirect:/" + gameId + "/reviews";
     }
 
@@ -140,7 +152,6 @@ public class HomeController {
         return "secured/manager/index";
     }
 
-    
 
     @GetMapping("/login")
     public String goToLogin() {
@@ -152,4 +163,3 @@ public class HomeController {
         return "error/permission-denied";
     }
 }
-
