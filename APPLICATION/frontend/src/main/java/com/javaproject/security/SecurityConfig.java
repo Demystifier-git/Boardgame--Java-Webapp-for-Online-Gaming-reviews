@@ -4,7 +4,6 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -28,8 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Autowired
-    @Lazy
-    private BCryptPasswordEncoder passwordEncoder;
+    private BCryptPasswordEncoder passwordEncoder; // removed @Lazy
 
     @Autowired
     private DataSource dataSource;
@@ -48,11 +46,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/**", "/secured/**").hasAnyRole("USER", "MANAGER")
                 .antMatchers("/manager/**").hasRole("MANAGER")
                 .and()
-                .formLogin().loginPage("/login").defaultSuccessUrl("/secured")
+                .formLogin()
+                    .loginPage("/login")
+                    .defaultSuccessUrl("/secured")
                 .and()
-                .logout().invalidateHttpSession(true).clearAuthentication(true)
+                .logout()
+                    .invalidateHttpSession(true)
+                    .clearAuthentication(true)
                 .and()
-                .exceptionHandling().accessDeniedHandler(accessDeniedHandler);
+                .exceptionHandling()
+                    .accessDeniedHandler(accessDeniedHandler);
 
         http.csrf().disable();
         http.headers().frameOptions().disable();
@@ -60,11 +63,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication()
-            .dataSource(dataSource)
-            .usersByUsernameQuery("SELECT username, password, enabled FROM users WHERE username = ?")
-            .authoritiesByUsernameQuery("SELECT username, authority FROM authorities WHERE username = ?")
+        // Use JdbcUserDetailsManager to handle authentication
+        auth.userDetailsService(jdbcUserDetailsManager())
             .passwordEncoder(passwordEncoder);
     }
 }
+
 
