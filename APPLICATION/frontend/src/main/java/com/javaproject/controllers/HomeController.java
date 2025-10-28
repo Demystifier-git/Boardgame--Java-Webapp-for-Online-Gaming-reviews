@@ -140,11 +140,7 @@ public class HomeController {
         return "secured/manager/index";
     }
 
-    // Renamed to avoid conflict with SecuredController
-    @GetMapping("/secured/gateway")
-    public String goToSecured() {
-        return "secured/gateway";
-    }
+    
 
     @GetMapping("/login")
     public String goToLogin() {

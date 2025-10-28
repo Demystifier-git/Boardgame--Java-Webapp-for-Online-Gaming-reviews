@@ -11,7 +11,7 @@ public class SecuredController {
     public String securedPage(Model model) {
         // This will handle requests to /secured after login
         model.addAttribute("message", "Welcome to the secured area!");
-        return "secured"; // This corresponds to secured.html (or secured.jsp)
+        return "secured/gateway"; // This corresponds to secured.html (or secured.jsp)
     }
 
     @GetMapping("/health")
