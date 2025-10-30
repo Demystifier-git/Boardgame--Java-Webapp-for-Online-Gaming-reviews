@@ -14,7 +14,7 @@ spec:
   triggers:
     - type: cpu
       metadata:
-        type: Utilization
+        metricType: Utilization
         value: "70"
 
     - type: prometheus
@@ -30,6 +30,7 @@ spec:
         metricName: http_latency_p95
         query: histogram_quantile(0.95, sum(rate(http_server_requests_seconds_bucket{app="java-app"}[5m])) by (le))
         threshold: "0.5"
+
 
 
 
