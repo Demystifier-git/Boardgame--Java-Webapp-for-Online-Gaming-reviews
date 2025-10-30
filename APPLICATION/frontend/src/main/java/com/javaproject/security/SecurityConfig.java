@@ -42,18 +42,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/signup", "/h2-console/**", "/", "/**").permitAll()
-                .antMatchers("/user/**", "/secured/**").hasAnyRole("USER", "MANAGER")
+                .antMatchers("/signup", "/h2-console/**", "/").permitAll()
                 .antMatchers("/manager/**").hasRole("MANAGER")
-                .and()
+                .antMatchers("/user/**", "/secured/**").hasAnyRole("USER", "MANAGER")
+                .anyRequest().authenticated() // everything else must be authenticated
+            .and()
                 .formLogin()
                     .loginPage("/login")
                     .defaultSuccessUrl("/secured")
-                .and()
+                    .permitAll()
+            .and()
                 .logout()
                     .invalidateHttpSession(true)
                     .clearAuthentication(true)
-                .and()
+            .and()
                 .exceptionHandling()
                     .accessDeniedHandler(accessDeniedHandler);
 
@@ -68,5 +70,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .passwordEncoder(passwordEncoder);
     }
 }
+
 
 
