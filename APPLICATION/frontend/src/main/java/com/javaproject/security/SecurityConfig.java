@@ -42,6 +42,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
+                // ✅ Allow Prometheus and actuator metrics to be accessed without authentication
+                .antMatchers("/actuator/**").permitAll()
+
+                // existing access rules below (untouched)
                 .antMatchers("/signup", "/h2-console/**", "/").permitAll()
                 .antMatchers("/manager/**").hasRole("MANAGER")
                 .antMatchers("/user/**", "/secured/**").hasAnyRole("USER", "MANAGER")
@@ -70,6 +74,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .passwordEncoder(passwordEncoder);
     }
 }
+
 
 
 
