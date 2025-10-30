@@ -3,58 +3,25 @@ kind: ScaledObject
 metadata:
   name: java-app-scaledobject
   namespace: default
-  labels:
-    app: java-app
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
     name: java-app-deployment
-
   minReplicaCount: 2
   maxReplicaCount: 30
-  cooldownPeriod: 60
-  pollingInterval: 30
-
-  advanced:
-    horizontalPodAutoscalerConfig:
-      behavior:
-        scaleUp:
-          stabilizationWindowSeconds: 0
-          policies:
-            - type: Percent
-              value: 200
-              periodSeconds: 15
-        scaleDown:
-          stabilizationWindowSeconds: 300
-          policies:
-            - type: Percent
-              value: 50
-              periodSeconds: 60
-    restoreToOriginalReplicaCount: true
-
   triggers:
-    # --- FIXED CPU TRIGGER (v2.18+) ---
     - type: cpu
       metadata:
-        metricType: Utilization   # ✅ new syntax
+        type: Utilization    # ✅ old syntax
         value: "70"
-
-    # --- Prometheus Request Rate (RPS) ---
     - type: prometheus
       metadata:
         serverAddress: http://prometheus-server.monitoring.svc.cluster.local:9090
         metricName: requests_per_second
         query: sum(rate(http_server_requests_seconds_count{app="java-app"}[1m]))
         threshold: "100"
-
-    # --- Prometheus Latency (P95) ---
-    - type: prometheus
-      metadata:
-        serverAddress: http://prometheus-server.monitoring.svc.cluster.local:9090
-        metricName: http_latency_p95
-        query: histogram_quantile(0.95, sum(rate(http_server_requests_seconds_bucket{app="java-app"}[5m])) by (le))
-        threshold: "0.5"
+"
 
 
 
