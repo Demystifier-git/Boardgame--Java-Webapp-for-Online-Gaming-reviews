@@ -34,12 +34,13 @@ spec:
     restoreToOriginalReplicaCount: true
 
   triggers:
-    # --- CPU trigger ---
+    # --- FIXED CPU TRIGGER ---
     - type: cpu
       metadata:
-        value: "70"   # target CPU utilization percentage
+        type: Utilization     # ✅ must be here
+        value: "70"           # 70% target CPU utilization
 
-    # --- Prometheus request rate ---
+    # --- Prometheus Request Rate (RPS) ---
     - type: prometheus
       metadata:
         serverAddress: http://prometheus-server.monitoring.svc.cluster.local:9090
@@ -47,7 +48,7 @@ spec:
         query: sum(rate(http_server_requests_seconds_count{app="java-app"}[1m]))
         threshold: "100"
 
-    # --- Prometheus latency ---
+    # --- Prometheus Latency (P95) ---
     - type: prometheus
       metadata:
         serverAddress: http://prometheus-server.monitoring.svc.cluster.local:9090
