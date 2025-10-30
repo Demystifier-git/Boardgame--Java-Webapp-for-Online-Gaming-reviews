@@ -18,6 +18,11 @@ spec:
     metadata:
       labels:
         app: java-app
+      # ✅ Add Prometheus annotations for scraping
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: "/actuator/prometheus"
+        prometheus.io/port: "8080"
     spec:
       containers:
         - name: java-app
@@ -82,6 +87,7 @@ spec:
 
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
+
 
 
 
