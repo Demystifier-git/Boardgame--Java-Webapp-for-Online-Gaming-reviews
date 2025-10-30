@@ -152,7 +152,7 @@ public class HomeController {
         return "secured/manager/index";
     }
 
-    @GetMapping("/user")
+    @GetMapping("/user/gateway")
     public String goToSecured() {
         return "secured/user/gateway";
     }
