@@ -15,10 +15,9 @@ spec:
     - type: prometheus
       metadata:
         serverAddress: http://prometheus-operated.monitoring.svc.cluster.local:9090
-        metricName: requests_per_second
-        query: sum(rate(http_server_requests_seconds_count{app="java-app"}[1m]))
-        threshold: "100"
-
+        metricName: hikaricp_connections_usage_seconds_count
+        query: sum(rate(hikaricp_connections_usage_seconds_count{pool="HikariPool-1"}[1m]))
+        threshold: "1"
 
 
 
