@@ -34,11 +34,11 @@ spec:
     restoreToOriginalReplicaCount: true
 
   triggers:
-    # --- FIXED CPU TRIGGER ---
+    # --- FIXED CPU TRIGGER (v2.18+) ---
     - type: cpu
       metadata:
-        type: Utilization     # ✅ must be here
-        value: "70"           # 70% target CPU utilization
+        metricType: Utilization   # ✅ new syntax
+        value: "70"
 
     # --- Prometheus Request Rate (RPS) ---
     - type: prometheus
@@ -55,6 +55,7 @@ spec:
         metricName: http_latency_p95
         query: histogram_quantile(0.95, sum(rate(http_server_requests_seconds_bucket{app="java-app"}[5m])) by (le))
         threshold: "0.5"
+
 
 
 
