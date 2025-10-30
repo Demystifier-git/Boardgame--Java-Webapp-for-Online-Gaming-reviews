@@ -11,11 +11,8 @@ spec:
   minReplicaCount: 2
   maxReplicaCount: 30
   pollingInterval: 30
+  cooldownPeriod: 60
   triggers:
-    - type: cpu
-      metadata:
-        metricType: Utilization
-        value: "70"
     - type: prometheus
       metadata:
         serverAddress: http://prometheus-server.monitoring.svc.cluster.local:9090
