@@ -34,13 +34,12 @@ spec:
     restoreToOriginalReplicaCount: true
 
   triggers:
-    # --- FIXED CPU TRIGGER ---
+    # --- CPU trigger ---
     - type: cpu
       metadata:
-        value: "70"
-        metricType: Utilization   # ✅ Must be inside metadata for KEDA 2.18+
+        value: "70"   # target CPU utilization percentage
 
-    # --- Prometheus Request Rate (RPS) ---
+    # --- Prometheus request rate ---
     - type: prometheus
       metadata:
         serverAddress: http://prometheus-server.monitoring.svc.cluster.local:9090
@@ -48,7 +47,7 @@ spec:
         query: sum(rate(http_server_requests_seconds_count{app="java-app"}[1m]))
         threshold: "100"
 
-    # --- Prometheus Latency (P95) ---
+    # --- Prometheus latency ---
     - type: prometheus
       metadata:
         serverAddress: http://prometheus-server.monitoring.svc.cluster.local:9090
