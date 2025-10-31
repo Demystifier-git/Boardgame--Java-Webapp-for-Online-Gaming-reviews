@@ -1,0 +1,35 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: java-app-alerts
+  namespace: monitoring
+spec:
+  groups:
+    - name: java-app
+      rules:
+        - alert: HighCPUUsage
+          expr: sum(rate(container_cpu_usage_seconds_total{pod=~"java-app.*"}[1m])) > 0.8
+          for: 2m
+          labels:
+            severity: critical
+          annotations:
+            summary: "High CPU usage detected on Java app"
+            description: "CPU usage is above 80% for more than 2 minutes"
+
+        - alert: HighMemoryUsage
+          expr: sum(container_memory_usage_bytes{pod=~"java-app.*"}) > 512*1024*1024
+          for: 2m
+          labels:
+            severity: critical
+          annotations:
+            summary: "High memory usage detected on Java app"
+            description: "Memory usage is above 512MB for more than 2 minutes"
+
+        - alert: HighRequestRate
+          expr: sum(rate(http_server_requests_seconds_count{app="java-app"}[1m])) > 100
+          for: 2m
+          labels:
+            severity: warning
+          annotations:
+            summary: "High request rate on Java app"
+            description: "Requests per second exceeded 100"

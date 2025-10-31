@@ -3,6 +3,12 @@ serverFiles:
     global:
       scrape_interval: 10s
 
+    alerting:
+      alertmanagers:
+        - namespace: monitoring
+          name: prometheus-alertmanager
+          port: 9093
+
     scrape_configs:
       # 1️⃣ Kubernetes Pods (auto-discovered)
       - job_name: 'kubernetes-pods'
@@ -26,9 +32,10 @@ serverFiles:
       - job_name: 'java-app'
         metrics_path: /actuator/prometheus
         static_configs:
-          - targets: ['java-app-service.default.svc.cluster.local:9090']
+          - targets: ['java-app-service.default.svc.cluster.local:8080']
 
       # 3️⃣ Node Exporter (EC2 host monitoring)
       - job_name: 'node_exporter'
         static_configs:
           - targets: ['3.84.102.38:9100']
+
