@@ -108,6 +108,7 @@ spec:
     app: java-app
   type: ClusterIP   # Change to NodePort or ClusterIP if needed
   ports:
-    - protocol: TCP
-      port: 80         # External port exposed by the Service
-      targetPort: 8080 # Container port your Java app listens on
+    - name: http          # Add this line
+      protocol: TCP
+      port: 80
+      targetPort: 8080
