@@ -1,0 +1,18 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: java-app-servicemonitor
+  namespace: monitoring
+  labels:
+    release: prometheus  # match the Prometheus release label
+spec:
+  selector:
+    matchLabels:
+      app: java-app   # this should match your Java app service labels
+  namespaceSelector:
+    matchNames:
+      - default       # namespace where your Java app is deployed
+  endpoints:
+    - port: http      # must match the service port name
+      path: /actuator/prometheus
+      interval: 15s
