@@ -21,7 +21,7 @@
 
     <properties>
         <java.version>17</java.version>
-        <jacoco.version>0.8.7</jacoco.version>
+        <jacoco.version>0.8.14</jacoco.version>
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
         <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
@@ -141,7 +141,7 @@
                         </exclude>
                     </excludes>
                     <!-- ✅ Added to ensure dependencies are fully packaged -->
-                    <layers enabled="false" />
+                    <layers enabled="false"/>
                 </configuration>
             </plugin>
 
