@@ -1,7 +1,7 @@
 # ================================
 # Stage 1: Build the application
 # ================================
-FROM maven:3.9.9-eclipse-temurin-17 AS build
+FROM maven:3.9.12-eclipse-temurin-17 AS build
 
 # Set working directory
 WORKDIR /app
@@ -17,7 +17,7 @@ RUN mvn clean package -DskipTests
 # ================================
 # Stage 2: Run the application
 # ================================
-FROM maven:3.9.9-eclipse-temurin-17
+FROM maven:3.9.12-eclipse-temurin-17
 
 # Set working directory inside container
 WORKDIR /app
