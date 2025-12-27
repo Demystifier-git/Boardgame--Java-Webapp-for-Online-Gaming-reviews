@@ -24,7 +24,6 @@ Amazon RDS (MySQL) – Managed relational database backend
 AWS Lambda – Automated database scaling operations
 
  Containerization & CI/CD
-
 Docker – Application containerization
 
 Amazon ECR – Container image storage
