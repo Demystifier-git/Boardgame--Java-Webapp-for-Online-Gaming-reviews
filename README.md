@@ -12,44 +12,29 @@ This repository showcases how all these components come together to deliver a se
 The application is fully containerized and deployed on AWS using the following technologies:
 
   Cloud & Infrastructure
-
 Amazon EKS – Kubernetes orchestration and application deployment
-
 Terraform – Infrastructure as Code for provisioning and management
-
 Amazon VPC & Route 53 – Secure networking and DNS routing
-
 Amazon RDS (MySQL) – Managed relational database backend
-
 AWS Lambda – Automated database scaling operations
 
  Containerization & CI/CD
 Docker – Application containerization
-
 Amazon ECR – Container image storage
-
 GitHub Actions – Automated CI/CD pipeline for build and deployment
 
  Monitoring, Logging & Observability
-
 Prometheus – Metrics collection
-
 Grafana – Visualization and dashboards
-
 Node Exporter – Node-level metrics
-
 Blackbox Exporter – Endpoint and availability monitoring
-
 Splunk – Centralized log aggregation and analysis
 
  Scaling & Performance
-
 KEDA – Event-driven autoscaling based on real-time metrics
-
 k6 – Load testing and performance validation
 
  Security
-
 Snyk – Vulnerability scanning and security checks
 
  CI/CD Workflow
